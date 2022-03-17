@@ -18,6 +18,7 @@ package io.cdap.cdap.security.authorization.ldap.role.permission;
 
 import io.cdap.cdap.proto.element.EntityType;
 import io.cdap.cdap.proto.security.ApplicationPermission;
+import io.cdap.cdap.proto.security.InstancePermission;
 import io.cdap.cdap.proto.security.Permission;
 import io.cdap.cdap.proto.security.StandardPermission;
 
@@ -296,6 +297,10 @@ public class RolePermissionConverter {
       case USE_STUDIO:
       case VIEW_COMPUTE_PROFILE:
         return StandardPermission.LIST;
+      case INITIATE_TETHER:
+        return InstancePermission.TETHER;
+      case PERFORM_HEALTH_CHECK:
+        return InstancePermission.HEALTH_CHECK;
     }
     return null;
   }
