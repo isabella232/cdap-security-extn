@@ -68,8 +68,10 @@ public class RolePermissionConverter {
     List<String> nonSystemNamespaces = new ArrayList<>(namespaces);
     if (namespaces.contains(SYSTEM_NAMESPACE)) {
       nonSystemNamespaces.remove(SYSTEM_NAMESPACE);
-      result.put(SYSTEM_NAMESPACE, principalPermissions);
-    } else {
+      if (!principalPermissions.isEmpty()) {
+        result.put(SYSTEM_NAMESPACE, principalPermissions);
+      }
+    } else if (!systemPrincipalPermissions.isEmpty()) {
       result.put(SYSTEM_NAMESPACE, systemPrincipalPermissions);
     }
 
@@ -77,7 +79,9 @@ public class RolePermissionConverter {
     Set<EntityTypeWithPermission> nonSystemPrincipalPermission = new HashSet<>(principalPermissions);
     nonSystemPrincipalPermission.removeAll(systemPrincipalPermissions);
 
-    nonSystemNamespaces.forEach(namespace -> result.put(namespace, nonSystemPrincipalPermission));
+    if (!nonSystemPrincipalPermission.isEmpty()) {
+      nonSystemNamespaces.forEach(namespace -> result.put(namespace, nonSystemPrincipalPermission));
+    }
 
     return result;
   }
@@ -297,7 +301,7 @@ public class RolePermissionConverter {
       case USE_STUDIO:
       case VIEW_COMPUTE_PROFILE:
         return StandardPermission.LIST;
-      case INITIATE_TETHER:
+      case INITIATE_AND_ACCEPT_TETHER:
         return InstancePermission.TETHER;
       case PERFORM_HEALTH_CHECK:
         return InstancePermission.HEALTH_CHECK;
@@ -334,6 +338,9 @@ public class RolePermissionConverter {
       case MANAGE_SECURE_KEY:
       case VIEW_SECURE_KEY:
         return EntityType.SECUREKEY;
+      case INITIATE_AND_ACCEPT_TETHER:
+      case PERFORM_HEALTH_CHECK:
+        return EntityType.INSTANCE;
     }
     return null;
   }

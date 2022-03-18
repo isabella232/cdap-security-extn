@@ -110,8 +110,8 @@ public enum RolePermission {
   VIEW_SYSTEM_SERVICES,
 
   // System Administration
-  @JsonProperty("Initiate Tether")
-  INITIATE_TETHER,
+  @JsonProperty("Initiate And Accept Tether")
+  INITIATE_AND_ACCEPT_TETHER,
   @JsonProperty("Perform Health Check")
   PERFORM_HEALTH_CHECK,
 }
